@@ -35,9 +35,6 @@ def remove_duplicates(datos):
 # %%
 def cleaning_date (data):
 
-  col ='FECHA_INICIO_DESPLAZAMIENTO_MOVIL'
-  data[col] #verificar como vienen los datos de la columna de fechas
-
   fecha = '1985-12-03 00:00:00'
   pd.to_datetime(fecha,errors='coerce', format ='%Y/%m/%d')#no asignarle nada si se encuentra en ese formato 
   #y asignarle un formato de fecha para verificar si es una fecha correcta o es un NaT
@@ -79,11 +76,21 @@ def column_cleaning (data):
  f = lambda x: x if pd.isna(x) else int(x) #definimos la funcion f para que si es nulo ponga x o si no ponga entero de f
  data[col] = data[col].apply(f)#para cambiar el tipo de dato de la columna EDAD de object a float
 
-# %%
+
+def save_data(reporte, filename): # Guardar tabla
+
+    out_name = 'Resumen_Limpieza' + filename # Indicar nombre al archivo de salida
+    out_path = os.path.join(root_dir, 'data', 'processed', out_name)
+    reporte.to_csv(out_path, sep=';')
+
+
 def main():
-    pass
+
+    filename = "llamadas_123_julio_2022.csv"
+    datos = get_data(filename)
+    save_data(datos, filename)
+    print('DONE')
+
 
 if __name__ == "__main__":
     main()
-
-
